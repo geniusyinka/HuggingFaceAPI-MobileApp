@@ -38,7 +38,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import {API_TOKEN} from "@env"
+// import {API_TOKEN} from "@env"
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -46,31 +46,6 @@ type SectionProps = PropsWithChildren<{
 
 global.Buffer = require('buffer').Buffer;
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
 // interface QueryData {
 //   inputs: string;
 // }
@@ -81,7 +56,7 @@ async function query(QueryData) {
       url: `https://api-inference.huggingface.co/models/SG161222/Realistic_Vision_V1.4`,
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${API_TOKEN}`, // Remember to manage your tokens securely
+        Authorization: `Bearer ${process.env.API_TOKEN}`,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
@@ -103,10 +78,6 @@ async function query(QueryData) {
 }
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
   const [inputText, setInputText] = useState('');
   const [imageData, setImageData] = useState('');
   const [loading, setLoading] = useState(false);
@@ -129,20 +100,13 @@ function App(): JSX.Element {
 
   return (
     <NativeBaseProvider>
-      <SafeAreaView style={backgroundStyle}>
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-          backgroundColor={backgroundStyle.backgroundColor}
-        />
         <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={backgroundStyle}>
-          <View
-            style={{
-              backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            }}>
+          contentInsetAdjustmentBehavior="automatic">
+          <View>
             <Center>
-              <Section title="">Input your prompt in the field below.</Section>
+              <Text fontSize="lg" mt={10}>
+              Input your prompt in the field below.
+              </Text>
             </Center>
             <View>
               <Box alignItems="center">
@@ -151,7 +115,6 @@ function App(): JSX.Element {
                   bg="#fff"
                   alignItems="center"
                   justifyContent="center">
-                  <Text></Text>
                 </Box>
                 <Stack space={4} w="75%" maxW="300px" mx="auto">
                   <Input
@@ -185,7 +148,6 @@ function App(): JSX.Element {
             </Center>
           </View>
         </ScrollView>
-      </SafeAreaView>
     </NativeBaseProvider>
   );
 }

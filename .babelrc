@@ -4,7 +4,10 @@
       "moduleName": "@env",
       "path": ".env",
       "blocklist": null,
-      "allowlist": null,
+      "allowlist": [
+        "API_URL",
+        "API_TOKEN"
+      ],
       "safe": false,
       "allowUndefined": true,
       "verbose": false
